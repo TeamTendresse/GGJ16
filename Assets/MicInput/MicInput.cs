@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class MicInput : MonoBehaviour {
  
     public static float MicLoudness;
+    public static float avgLoudness ;
 
     private string _device;
  
@@ -45,7 +46,7 @@ public class MicInput : MonoBehaviour {
         return levelMax;
     }
  
- 	float avgLoudness ;
+ 	
  
     void Update()
     {
@@ -55,18 +56,17 @@ public class MicInput : MonoBehaviour {
 	        MicLoudness = LevelMax ();
 	        //loudness.Dequeue() ;
 	        loudness.Enqueue(MicLoudness) ;
-	        if(loudness.Count > 60){
+	        if(loudness.Count > 180){
 	        	loudness.Dequeue() ;
 	        }
-	        if(loudness.Count > 50){
+	        if(loudness.Count > 170){
 	        	avgLoudness = loudness.Average() ; 
-	        	if(avgLoudness >= 0.03f){
-		        	Debug.Log("noise") ;
-		        }else{
-		        	Debug.Log("silence") ;
-		        }
-        		Debug.Log(avgLoudness) ;
+        		//Debug.Log(avgLoudness) ;
+	        }else{
+	        	avgLoudness = -1f ;
 	        }
+	    }else{
+	    	avgLoudness = -1f ;
 	    }
     }
  
