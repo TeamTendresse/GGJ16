@@ -414,11 +414,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae63abb6b3c6d44e95eaa36c629150e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intro: {fileID: 8300000, guid: 42dd077ea9e06d2418594d9d8bebcc18, type: 3}
-  haut: {fileID: 8300000, guid: 934891f6cba3da44faba9d78af53309b, type: 3}
-  bas: {fileID: 8300000, guid: b463edbfe00b65249a2f98b64e669ea6, type: 3}
-  gauche: {fileID: 8300000, guid: 04d854a69e82972489b463cf49127680, type: 3}
-  droite: {fileID: 8300000, guid: bf0213d2273e6f64a94a5b413b97ac84, type: 3}
+  intro: {fileID: 8300000, guid: 2d7c4dbf1ca79c7448f2e2573040c2ed, type: 3}
+  haut: {fileID: 8300000, guid: 428170db51c8c214bb2cf65516b34fb8, type: 3}
+  bas: {fileID: 8300000, guid: 4e1798c636926814eb1181459234206a, type: 3}
+  gauche: {fileID: 8300000, guid: 04f9087f2275fdb448bd6f5430903a1b, type: 3}
+  droite: {fileID: 8300000, guid: ef0216061ce5f504084602271494fe8d, type: 3}
+  outro: {fileID: 8300000, guid: 0d7a83e272001a44bbdb335a57a59a40, type: 3}
   previous: {x: 0, y: 0, z: 0}
   distance: 1
 --- !u!1001 &100100000

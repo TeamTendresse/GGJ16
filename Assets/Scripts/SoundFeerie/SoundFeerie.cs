@@ -7,32 +7,33 @@ public class SoundFeerie : MonoBehaviour {
     public AudioClip bas ;
     public AudioClip gauche ;
     public AudioClip droite ;
+    public AudioClip outro ;
 
     public Vector3 previous ;
-    public float distance = 1;
-    bool started = false;
-    float timeNoMove = 0;
-    bool hasMoved = false;
+    public float distance = 1 ;
+    bool started = false ;
+    float timeNoMove = 0 ;
+    bool hasMoved = false ;
     AudioSource[] audio ;
-    
+
     // Use this for initialization
     void Start () {
-        previous = new Vector3(0f,0f,5f); 
+        previous = new Vector3(0f,0f,5f) ; 
         audio = GetComponents<AudioSource>() ;
         audio[0].clip = bas ;
-        audio[0].volume = 0f;
-        audio[0].Play() ;
+        audio[0].volume = 0f ;
+        audio[0].PlayDelayed(0.2f) ;
         audio[1].clip = haut ;
-        audio[1].volume = 0f;
-        audio[1].Play() ;
+        audio[1].volume = 0f ;
+        audio[1].PlayDelayed(0.4f) ;
         audio[2].clip = gauche ;
-        audio[2].volume = 0f;
-        audio[2].Play() ;
+        audio[2].volume = 0f ;
+        audio[2].PlayDelayed(0.6f) ;
         audio[3].clip = droite ;
-        audio[3].volume = 0f;
-        audio[3].Play() ;
+        audio[3].volume = 0f ;
+        audio[3].PlayDelayed(0.8f) ;
         audio[4].clip = intro ;
-        audio[4].volume = 0f;
+        audio[4].volume = 0f ;
     }
 
     // Update is called once per frame
@@ -83,8 +84,7 @@ public class SoundFeerie : MonoBehaviour {
             }else if(pos.x >= 4f){
                 /* droite */
                 audio[2].volume = 0f ;
-                audio[3].volume = 1f ;
-                
+                audio[3].volume = 1f ;   
             }
 
             previous = pos ;
@@ -93,7 +93,13 @@ public class SoundFeerie : MonoBehaviour {
         if (!Input.GetButton("Fire1") && started){
             previous.z = 5f ;
             started = false ;
+            audio[0].volume = 0f ;
+            audio[1].volume = 0f ;
+            audio[2].volume = 0f ;
+            audio[3].volume = 0f ;
+            audio[4].clip = outro ;
+            audio[4].volume = 0.1f ;
+            //audio[4].Play() ;
         }
-
     }
 }
