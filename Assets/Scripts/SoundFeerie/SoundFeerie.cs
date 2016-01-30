@@ -2,38 +2,36 @@
 using System.Collections;
 
 public class SoundFeerie : MonoBehaviour {
+    public AudioClip[] sounds ;
     public AudioClip intro ;
-    public AudioClip haut ;
-    public AudioClip bas ;
-    public AudioClip gauche ;
-    public AudioClip droite ;
-    public AudioClip outro ;
 
     public Vector3 previous ;
     public float distance = 1 ;
     bool started = false ;
-    float timeNoMove = 0 ;
-    bool hasMoved = false ;
-    AudioSource[] audio ;
+    public AudioSource[] audio ;
+    public bool randSound = false ;
+    float zoneH ;
+    float zoneV ;
+    int zone = -1 ;
 
-    // Use this for initialization
     void Start () {
+        int height = Screen.height ;
+        int width = Screen.width ;
+        zoneH = width/3 ;
+        zoneV = height/3 ;
         previous = new Vector3(0f,0f,5f) ; 
-        audio = GetComponents<AudioSource>() ;
-        audio[0].clip = bas ;
-        audio[0].volume = 0f ;
-        audio[0].PlayDelayed(0.2f) ;
-        audio[1].clip = haut ;
-        audio[1].volume = 0f ;
-        audio[1].PlayDelayed(0.4f) ;
-        audio[2].clip = gauche ;
-        audio[2].volume = 0f ;
-        audio[2].PlayDelayed(0.6f) ;
-        audio[3].clip = droite ;
-        audio[3].volume = 0f ;
-        audio[3].PlayDelayed(0.8f) ;
-        audio[4].clip = intro ;
-        audio[4].volume = 0f ;
+        for(int i = 0; i<9; i++){ 
+            audio[i] = this.gameObject.AddComponent<AudioSource>() ;
+            //audio[i] = new AudioSource() ;
+            audio[i].clip = sounds[i] ;
+            audio[i].loop = false ;
+            audio[i].playOnAwake = false ;
+        }
+
+        audio[9] = this.gameObject.AddComponent<AudioSource>() ;
+        audio[9].clip = intro ;
+        audio[9].loop = false ;
+        audio[9].playOnAwake = false ;
     }
 
     // Update is called once per frame
@@ -41,65 +39,41 @@ public class SoundFeerie : MonoBehaviour {
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = 0;
 
-        timeNoMove += Time.deltaTime;
-        if(timeNoMove >= 2 && hasMoved){
-            hasMoved = false;
-        }
-
         if (Input.GetButton("Fire1") || Input.touchCount > 0){
             
-            if (!hasMoved && previous.z == 5f){
+            if (previous.z == 5f){
                 started = true;
-                audio[4].volume = 0.7f ;
-                audio[4].Play() ;
+                if(!audio[9].isPlaying){
+                    audio[9].clip = intro ;
+                    audio[9].volume = 0.7f ;
+                    audio[9].Play() ;
+                }
             }
+            
+            int zoneX = (int)(Input.mousePosition.x/zoneH) ;
+            int zoneY = (int)(Input.mousePosition.y/zoneV) ;
 
-            hasMoved = true;
-            timeNoMove = 0;
-            if(pos.y < 4f && pos.y > -4f){
-                /* crossfade haut-bas */
-                audio[0].volume = -(pos.y/4f)+1f ;
-                audio[1].volume = (pos.y/4f)+1f ;
-            }else if(pos.y < -4f){
-                /* bas */
-                audio[0].volume = 1f ;
-                audio[1].volume = 0f ;
-                
-            }else if(pos.y >= 4f){
-                /* haut */
-                audio[0].volume = 0f ;
-                audio[1].volume = 1f ;
-                
+            if(zoneY == 2){
+                zone = (int)zoneX ;
+            }else if(zoneY == 1){
+                 zone = (int)zoneX+3 ;
+            }else{
+                zone = (int)zoneX+6 ;
             }
-
-            if(pos.x < 4f && pos.x > -4f){
-                /* crossfade gauche-droite */
-                audio[2].volume = -(pos.x/4f)+1f ;
-                audio[3].volume = (pos.x/4f)+1f ;
-            }else if(pos.x < -4f){
-                /* gauche */
-                audio[2].volume = 1f ;
-                audio[3].volume = 0f ;
-                
-            }else if(pos.x >= 4f){
-                /* droite */
-                audio[2].volume = 0f ;
-                audio[3].volume = 1f ;   
+            if(!audio[zone].isPlaying){
+                audio[zone].loop = false ;
+                if(randSound){
+                    int tirage = (int)Random.Range(0, sounds.Length);
+                    audio[zone].clip = sounds[tirage] ;
+                }
+                audio[zone].Play();
             }
-
             previous = pos ;
         }
 
-        if (!Input.GetButton("Fire1") && started){
+        if (!Input.GetButton("Fire1")){
             previous.z = 5f ;
             started = false ;
-            audio[0].volume = 0f ;
-            audio[1].volume = 0f ;
-            audio[2].volume = 0f ;
-            audio[3].volume = 0f ;
-            audio[4].clip = outro ;
-            audio[4].volume = 0.1f ;
-            //audio[4].Play() ;
         }
     }
 }
