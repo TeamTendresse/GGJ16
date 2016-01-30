@@ -210,8 +210,8 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 103214, guid: 2616271fd6ae2974aa8d104542885d67, type: 2}
-      propertyPath: m_IsActive
+    - target: {fileID: 11431818, guid: 2616271fd6ae2974aa8d104542885d67, type: 2}
+      propertyPath: randSound
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
