@@ -423,7 +423,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11454696, guid: 59d8c41d77946f042b0a101d80f34977, type: 2}
       propertyPath: id
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11454696, guid: 59d8c41d77946f042b0a101d80f34977, type: 2}
       propertyPath: SoundFeeries.Array.data[8]
