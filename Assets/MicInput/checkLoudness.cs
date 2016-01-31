@@ -84,7 +84,7 @@ public class checkLoudness : MonoBehaviour {
 
 		if(Time.time >= objectiveTime){
 			player.showSign(player.getGesturePoints(0)) ;
-			Invoke("Application.LoadLevel("Game")",5f);
+			//Invoke("Application.LoadLevel("Game")",5f);
 		}
 	}
 }
