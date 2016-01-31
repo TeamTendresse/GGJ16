@@ -51,8 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78131472f33a0994faa13547e3fef969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSavingGestures: 1
+  isSavingGestures: 0
   minGestureLength: 10
+  feedbacks: {fileID: 11408370, guid: 5c850a5afe936dc44952cfcd64c6f3e7, type: 2}
   savedGestures:
   - points:
     - {x: 108, y: 130}
@@ -1687,7 +1688,12 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: feedbacks
+      value: 
+      objectReference: {fileID: 11408370, guid: 5c850a5afe936dc44952cfcd64c6f3e7,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 190856}

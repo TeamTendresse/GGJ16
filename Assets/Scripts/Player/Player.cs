@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     public bool isSavingGestures;
     public float minGestureLength;
+    public Feedbacks feedbacks ;
 
     private GestureRecognitionController gestureRecognitionController;
     private DotSpawner dotSpawner;
@@ -163,6 +164,6 @@ public class Player : MonoBehaviour
 
     private void showSign ()
     {
-        
+        feedbacks.playVictory() ;
     }
 }
