@@ -10,6 +10,8 @@ public class Profile : MonoBehaviour
     private string id;
     public int score { get; private set; }
 
+    public bool cheat = false;
+
 	void Start ()
     {
         id = SystemInfo.deviceUniqueIdentifier;
@@ -24,7 +26,7 @@ public class Profile : MonoBehaviour
 
     public int getScore ()
     {
-        return score;
+        return score +( cheat ? 1000 : 0);
     }
 
     public void setScore(int newScore)

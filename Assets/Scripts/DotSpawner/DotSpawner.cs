@@ -19,6 +19,8 @@ public class DotSpawner : MonoBehaviour {
     bool invert = false;
     Dot.DotType dotType = Dot.DotType.dotCircle;
 
+    bool showingSign = false;
+
     public enum ModeSpawner
     {
         silent,
@@ -69,87 +71,97 @@ public class DotSpawner : MonoBehaviour {
 
     public void setMode(ModeSpawner mode)
     {
-            _Mode = mode;
-            if (mode == ModeSpawner.silent)
-            {
-                killLastDot(); 
-            }
+        _Mode = mode;
+        if (mode == ModeSpawner.silent)
+        {
+            killLastDot(); 
+        }
         
-            CurrentColor = getNewColor();
+        CurrentColor = getNewColor();
+        if (mode == ModeSpawner.silent || mode == ModeSpawner.locked)
+        {
+            setCamInvertColor(CurrentColor);
+            killLastDot();
+            hasMoved = true;
+        }
     }
 
     private IEnumerator makeSign(List<Vector2> points)
     {
-        bool inverty = true;
-        //Max and min
-        float minx = Mathf.Infinity;
-        float miny = Mathf.Infinity;
-        float maxx = 0;
-        float maxy = 0;
-
-        float rapport = (float)(Screen.currentResolution.width) / 1920.0f;
-        rapport = 1 / rapport;
-
-        for (int i = 0; i < points.Count; i++)
+        if(!showingSign)
         {
-           Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y)*rapport, 1));
-  
-            if (pointPos.x > maxx) maxx = pointPos.x;
-            if (pointPos.y > maxy) maxy = pointPos.y;
-            if (pointPos.x < minx) minx = pointPos.x;
-            if (pointPos.y < miny) miny = pointPos.y;
+            showingSign = true;
+            bool inverty = true;
+            //Max and min
+            float minx = Mathf.Infinity;
+            float miny = Mathf.Infinity;
+            float maxx = 0;
+            float maxy = 0;
 
-        }
-        Vector3 offset = new Vector3();
-        offset.x = (maxx + minx) / 2;
-        offset.y = (maxy + miny) / 2;
-        Debug.Log(offset);
+            float rapport = (float)(Screen.currentResolution.width) / 1920.0f;
+            rapport = 1 / rapport;
 
-        if (lastDot)
-        {
-            lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
-            lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
-            lastDot.GetChild(0).GetComponent<Dot>().kill = true;
-            started = true;
-        }
-
-        //Save it cause coroutine so changes
-        Color currentColor = CurrentColor;
-        Dot.DotType lDotType = Dot.DotType.dotScale;
-        bool lInvert = this.invert;
-
-        Debug.Log(Screen.currentResolution.width);
-        
-
-        lastDot = null;
-        for (int i = 0; i < points.Count; i++)
-        {
-            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y)*rapport, 1));
-            pointPos -= offset;
-
-            
-
-            if (lastDot == null || Vector3.Distance(pointPos, lastDot.position) > distance)
+            for (int i = 0; i < points.Count; i++)
             {
-                Transform dot = GameObject.Instantiate(prefabDot, pointPos, Quaternion.identity) as Transform;
-                Transform subDot = dot.GetChild(0);
-                subDot.localScale = new Vector3(0, 0, 1);
-                subDot.GetComponent<Dot>().setParams(lDotType, lInvert, invert);
-                subDot.GetComponent<Renderer>().material.SetColor("_Color", currentColor);
-                subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1, 0, 0) : pointPos - lastDot.position;
-                subDot.GetComponent<Dot>().SendWorldScaleToShader();
-                subDot.GetComponent<Animator>().SetTrigger("Dis");
-                subDot.GetComponent<Dot>().kill = true;
-                lastDot = dot;
-                yield return new WaitForSeconds(0.01f);
+                Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y) * rapport, 1));
+
+                if (pointPos.x > maxx) maxx = pointPos.x;
+                if (pointPos.y > maxy) maxy = pointPos.y;
+                if (pointPos.x < minx) minx = pointPos.x;
+                if (pointPos.y < miny) miny = pointPos.y;
+
+            }
+            Vector3 offset = new Vector3();
+            offset.x = (maxx + minx) / 2;
+            offset.y = (maxy + miny) / 2;
+            Debug.Log(offset);
+
+            if (lastDot)
+            {
+                lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
+                lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
+                lastDot.GetChild(0).GetComponent<Dot>().kill = true;
+                started = true;
             }
 
-            
+            //Save it cause coroutine so changes
+            Color currentColor = CurrentColor;
+            Dot.DotType lDotType = Dot.DotType.dotScale;
+            bool lInvert = this.invert;
 
+            Debug.Log(Screen.currentResolution.width);
+
+
+            lastDot = null;
+            for (int i = 0; i < points.Count; i++)
+            {
+                Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y) * rapport, 1));
+                pointPos -= offset;
+
+
+
+                if (lastDot == null || Vector3.Distance(pointPos, lastDot.position) > distance)
+                {
+                    Transform dot = GameObject.Instantiate(prefabDot, pointPos, Quaternion.identity) as Transform;
+                    Transform subDot = dot.GetChild(0);
+                    subDot.localScale = new Vector3(0, 0, 1);
+                    subDot.GetComponent<Dot>().setParams(lDotType, lInvert, invert);
+                    subDot.GetComponent<Renderer>().material.SetColor("_Color", currentColor);
+                    subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1, 0, 0) : pointPos - lastDot.position;
+                    subDot.GetComponent<Dot>().SendWorldScaleToShader();
+                    subDot.GetComponent<Animator>().SetTrigger("Dis");
+                    subDot.GetComponent<Dot>().kill = true;
+                    lastDot = dot;
+                    yield return new WaitForSeconds(0.01f);
+                }
+            }
+
+            //Au cas ou
+            setCamInvertColor(CurrentColor);
+
+            showingSign = false;
         }
-
-        //Au cas ou
-        setCamInvertColor(CurrentColor);
+        
 
     }
 
