@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &147754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 419912}
+  - 114: {fileID: 11442160}
+  m_Layer: 0
+  m_Name: SoundFeerie_guerre
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &419912
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11442160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae63abb6b3c6d44e95eaa36c629150e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - {fileID: 8300000, guid: 8e167dc45b4e28e44938f29aace645d5, type: 3}
+  - {fileID: 8300000, guid: cc94ccd25b00be444ba0b3ce35cdf028, type: 3}
+  - {fileID: 8300000, guid: 2791a03ec17da8541878812e872d8165, type: 3}
+  - {fileID: 8300000, guid: 6ec9f53c01c8d63468f1b7211c99ac36, type: 3}
+  - {fileID: 8300000, guid: f113e30f0d6c96449b3549aafb61881f, type: 3}
+  - {fileID: 8300000, guid: e3c6300855452864793fef95fa903331, type: 3}
+  - {fileID: 8300000, guid: 6e701edcd2218864ba068dfdbbb2d720, type: 3}
+  - {fileID: 8300000, guid: 6ec9f53c01c8d63468f1b7211c99ac36, type: 3}
+  - {fileID: 8300000, guid: 666b6df3d9b5b3741ba6bda5902400aa, type: 3}
+  audio:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  randSound: 1
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 8e167dc45b4e28e44938f29aace645d5, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: cc94ccd25b00be444ba0b3ce35cdf028, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 2791a03ec17da8541878812e872d8165, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ec9f53c01c8d63468f1b7211c99ac36, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: f113e30f0d6c96449b3549aafb61881f, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: e3c6300855452864793fef95fa903331, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6e701edcd2218864ba068dfdbbb2d720, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ec9f53c01c8d63468f1b7211c99ac36, type: 3}
+    - target: {fileID: 0}
+      propertyPath: sounds.Array.data[8]
+      value: 
+      objectReference: {fileID: 8300000, guid: 666b6df3d9b5b3741ba6bda5902400aa, type: 3}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 147754}
+  m_IsPrefabParent: 1
