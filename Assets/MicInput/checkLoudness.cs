@@ -22,7 +22,7 @@ public class checkLoudness : MonoBehaviour {
     	camera.clearFlags = CameraClearFlags.SolidColor;
     	color1 = color_silent ;
     	color2 = color_silent2 ;
-    	objectiveTime = Time.time + 10f*1f + 1f ;
+    	objectiveTime = Time.time + 60f*1f + 1f ;
     	player = GameObject.FindObjectOfType<Player>();
 	}
 	
@@ -84,7 +84,11 @@ public class checkLoudness : MonoBehaviour {
 
 		if(Time.time >= objectiveTime){
 			player.showSign(player.getGesturePoints(0)) ;
-			//Invoke("Application.LoadLevel("Game")",5f);
+			Invoke("goBack",5f);
 		}
+	}
+
+	private void goBack(){
+		Application.LoadLevel("Game") ;
 	}
 }
