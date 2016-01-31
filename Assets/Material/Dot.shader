@@ -3,7 +3,6 @@
 	Properties
 	{
 		_MainTex("Sprite Texture", 2D) = "white" {}
-		//_Color("Color", Color) = (0,0,0,0)
 	}
 	
 	SubShader
@@ -29,6 +28,13 @@
 			uniform float4 _MainTex_ST;
 			uniform float4 _Color;
 			uniform float4 _Scale;
+			uniform float2 _DirTrace;
+			uniform int _Fadeout;
+			uniform int _Mode;
+			uniform int _Invert;
+
+			uniform float p1;
+			uniform float p2;
 
 			struct Vertex
 			{
@@ -62,9 +68,103 @@
 				return o;
 			}
 
-			float getAlpha(float min, float max)
+			float getAlpha(float2 center, float2 pos, float rayon, float pixelSize, int prof)
 			{
+				float alpha = 0;
+				float rayonMax = rayon;
+				float2 dirTmp = normalize(_DirTrace);
+				float2 dir = float2(dirTmp.y,-dirTmp.x);
+				float marge = 2 * pixelSize;
 
+				for (int i = 0; i < 10; i++)
+				{
+					if (_Mode == 0)
+						rayon *= 1-p1;
+
+					float len = length(pos - center);
+					float zonePleine = rayon - marge;
+					
+					if(_Mode == 0)
+					{
+						if(len < rayon)
+						{
+							if (len < zonePleine)
+								alpha = 1;
+							else
+								alpha = 1 - (len - zonePleine) / (rayon - zonePleine);
+						}
+					}
+
+					if (_Mode == 2 || _Mode == 1)
+					{
+						
+						if (_Mode == 1)
+						{
+							if (_Invert == 0)
+							{
+								if (p1 > 0)
+								{
+									if (len < rayonMax)
+										len = (rayonMax - marge) - len;
+								}
+							}
+						}
+
+						if (_Mode == 2)
+						{
+							if (_Invert == 0)
+							{
+								if (p1 > 0)
+								{
+									if (len < rayonMax)
+										len = (rayonMax - marge) - abs(dot(pos - center, dir));
+								}
+							}
+							else
+							{ 
+								if (p1 > 0)
+								{
+									if (len < rayonMax)
+										len = abs(dot(pos - center, dir));
+								}
+							}
+								
+						}
+						
+						
+						if (i % 2 == 0)
+						{
+							if (len < rayon)
+							{
+								if (len < zonePleine)
+									alpha = 1;
+								else
+									alpha = 1 - (len - zonePleine) / (rayon - zonePleine);
+							}
+						}
+						else
+						{
+							if (len < rayon)
+							{
+								if (len < zonePleine)
+									alpha = 0;
+								else
+									alpha = (len - zonePleine) / (rayon - zonePleine);
+							}
+						}
+					}
+
+					if (_Mode == 0)
+						break;
+						
+					//On passe au suivant
+					rayon *= p1;
+				}
+				
+				if (_Fadeout > 0)
+					alpha *= 1 - p1;
+
+				return alpha ;	
 			}
 
 			float4 frag(Fragment IN) : COLOR
@@ -74,27 +174,9 @@
 
 				float2 sizeScaled = float2(_MainTex_TexelSize.x / IN.scale.x, _MainTex_TexelSize.y / IN.scale.y);
 				sizeScaled.x *= _MainTex_ST.x;
-				sizeScaled.y *= _MainTex_ST.y;
-
-				/*if (sizeScaled.x > 1 || sizeScaled.y > 1 || sizeScaled.x < 0 || sizeScaled.y < 0)
-				{
-					
-					return o;
-				}*/
-
-								
-				
-				float len = 2 * length(IN.uv_MainTex - float2(0.5, 0.5));
-				
-				float min = 1 - 2 * length(sizeScaled);
-
-				if (len < min)
-					o.a = 1;
-				else if (len < 1)
-					o.a =1-	(len - min) / (1 - min);
-
-				//Fractal
-
+				sizeScaled.y *= _MainTex_ST.y;						
+		
+				o.a = getAlpha(float2(0.5,0.5), IN.uv_MainTex, 0.5	, length(sizeScaled),0);
 
 				return o;
 			}

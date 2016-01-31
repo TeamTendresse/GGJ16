@@ -23,7 +23,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 169702}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.893243, y: 0.06486393, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -39,8 +39,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be457f2b1b894b54995a602426933df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabDotDisapear: {fileID: 426066, guid: 15096486fbcc324428d0707a6a651015, type: 2}
-  distance: 1
+  prefabDot: {fileID: 426066, guid: 15096486fbcc324428d0707a6a651015, type: 2}
+  distance: 0.55
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

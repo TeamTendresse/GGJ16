@@ -3,76 +3,112 @@ using System.Collections;
 
 public class DotSpawner : MonoBehaviour {
 
-    public Transform prefabDotDisapear;
+    public Transform prefabDot;
+    Transform lastDot = null;
+
     public float distance = 1;
     bool started = false;
-    Transform previous = null;
+    
     Color CurrentColor;
     float timeNoMove = 0;
     bool hasMoved = false;
-    // Use this for initialization
-    void Start () {
-        CurrentColor = new Color(Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), 0);
-        previous = GameObject.Instantiate(prefabDotDisapear, new Vector3(0,0,0), Quaternion.identity) as Transform;
-        previous.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color",
-           CurrentColor);
-        //previous.GetChild(0).GetComponent<Animator>().enabled = false;
-        previous.GetChild(0).transform.localScale = new Vector3(0, 0, 1);
-        previous.GetChild(0).GetComponent<Dot>().SendWorldScaleToShader();
-        previous.GetChild(0).GetComponent<Animator>().SetTrigger("First");
-        //
-        //
+
+    bool fadeout = true;
+    bool invert = false;
+    Dot.DotType dotType = Dot.DotType.dotCircle;
+
+    public void setParams(Dot.DotType type, bool fadeout, bool invert)
+    {
+        this.fadeout = fadeout;
+        this.invert = invert;
+        this.dotType = type;
     }
 
-    // Update is called once per frame
+    Color getNewColor()
+    {
+        return new Color(Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), 0);
+    }
+
+    void setCamInvertColor(Color color)
+    {
+        Camera.main.backgroundColor = new Color(1,1,1,1) - color;
+    }
+
+    // Use this for initialization
+    void Start () {
+        CurrentColor = getNewColor();
+        setCamInvertColor(CurrentColor);
+        Transform dot = GameObject.Instantiate(prefabDot, new Vector3(0,0,0), Quaternion.identity) as Transform;
+        Transform subDot = dot.GetChild(0);
+        subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
+        subDot.localScale = new Vector3(0, 0, 1);
+        subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
+        subDot.GetComponent<Dot>().SendWorldScaleToShader();
+        subDot.GetComponent<Animator>().SetTrigger("First");
+        lastDot = dot;
+    }
+
+
     void   Update () {
+
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = 0;
-
+   
         timeNoMove += Time.deltaTime;
         if(timeNoMove >= 2 && hasMoved)
         {
             hasMoved = false;
-            CurrentColor = new Color(Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), 0);
-            previous = GameObject.Instantiate(prefabDotDisapear, new Vector3(0, 0, 0), Quaternion.identity) as Transform;
-            previous.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color",
-               CurrentColor);
-            previous.GetChild(0).transform.localScale = new Vector3(0, 0, 1);
-            previous.GetChild(0).GetComponent<Dot>().SendWorldScaleToShader();
-            previous.GetChild(0).GetComponent<Animator>().SetTrigger("First");
-
-            
+            CurrentColor = getNewColor();
+            setCamInvertColor(CurrentColor);
+            Transform dot = GameObject.Instantiate(prefabDot, new Vector3(0, 0, 0), Quaternion.identity) as Transform;
+            Transform subDot = dot.GetChild(0);
+            subDot.localScale = new Vector3(0, 0, 1);
+            subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale   , true, false);
+            subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
+            subDot.GetComponent<Dot>().direction = new Vector3(1,0,0);
+            subDot.GetComponent<Dot>().SendWorldScaleToShader();
+            subDot.GetComponent<Animator>().SetTrigger("First");
+            lastDot = dot;
         }
 
         if ((Input.GetButton("Fire1") || Input.touchCount > 0) && 
-            (previous == null || 
-             Vector3.Distance(previous.position, pos) > distance * previous.GetChild(0).localScale.x))
-
+            (lastDot == null || 
+             Vector3.Distance(lastDot.position, pos) > distance * lastDot.GetChild(0).localScale.x))
         {
-            
-            if (!hasMoved)
+            if (!hasMoved && lastDot)
             {
-                previous.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
-                previous.GetChild(0).GetComponent<Animator>().speed = 10;
-                previous.GetChild(0).GetComponent<Dot>().kill = true;
+                lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
+                lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
+                lastDot.GetChild(0).GetComponent<Dot>().kill = true;
                 started = true;
             }
 
             hasMoved = true;
             timeNoMove = 0;
 
-            previous = GameObject.Instantiate(prefabDotDisapear, pos,Quaternion.identity) as Transform;
-            previous.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
-            previous.GetChild(0).GetComponent<Renderer>().material.SetColor("_Color",
-               CurrentColor);
-            previous.GetChild(0).GetComponent<Dot>().kill = true;
+            Vector3 prevPos = new Vector3(0, 0, 0);
+            if (lastDot)
+                prevPos = lastDot.position;
+
+            setCamInvertColor(CurrentColor);
+            Transform dot = GameObject.Instantiate(prefabDot, pos,Quaternion.identity) as Transform;
+            Transform subDot = dot.GetChild(0);
+            subDot.GetComponent<Dot>().setParams(dotType, fadeout, invert);
+            subDot.GetComponent<Animator>().SetTrigger("Dis");
+            subDot.GetComponent<Renderer>().material.SetColor("_Color",CurrentColor);
+            subDot.GetComponent<Dot>().direction = dot.position - prevPos;
+            subDot.GetComponent<Dot>().kill = true;
+            lastDot = dot;
         }
 
         if (!Input.GetButton("Fire1"))
         {
-
-            CurrentColor = new Color(Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f),0);
-
+            CurrentColor = getNewColor();
+            int typeInt = Random.Range(0, 3);
+            Dot.DotType type = Dot.DotType.dotCircle;
+            if (typeInt == 1) type = Dot.DotType.dotScale;
+            if (typeInt == 2) type = Dot.DotType.dotDragon;
+            setParams(type, Random.Range(0, 2) == 0, Random.Range(0, 2) == 0);
         }
 
     }
