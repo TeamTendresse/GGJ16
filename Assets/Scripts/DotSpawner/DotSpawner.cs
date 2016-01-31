@@ -87,10 +87,13 @@ public class DotSpawner : MonoBehaviour {
         float maxx = 0;
         float maxy = 0;
 
+        float rapport = (float)(Screen.currentResolution.width) / 1920.0f;
+        rapport = 1 / rapport;
+
         for (int i = 0; i < points.Count; i++)
         {
-            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, Screen.height-points[i].y, 1));
-
+           Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y)*rapport, 1));
+  
             if (pointPos.x > maxx) maxx = pointPos.x;
             if (pointPos.y > maxy) maxy = pointPos.y;
             if (pointPos.x < minx) minx = pointPos.x;
@@ -115,10 +118,13 @@ public class DotSpawner : MonoBehaviour {
         Dot.DotType lDotType = Dot.DotType.dotScale;
         bool lInvert = this.invert;
 
+        Debug.Log(Screen.currentResolution.width);
+        
+
         lastDot = null;
         for (int i = 0; i < points.Count; i++)
         {
-            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, Screen.height - points[i].y, 1));
+            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x * rapport, (Screen.height - points[i].y)*rapport, 1));
             pointPos -= offset;
 
             
