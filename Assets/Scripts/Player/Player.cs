@@ -113,11 +113,17 @@ public class Player : MonoBehaviour
                     Result res;
                     if (gestureRecognitionController.isSignOk(points, out res))
                     {
-                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
-
-                        if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                        if (dotSpawner._Mode == DotSpawner.ModeSpawner.locked)
                         {
-                            hasDoneUnlockSign = true;
+                            if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                            {
+                                hasDoneUnlockSign = true;
+                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            }
+                        }
+                        else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
+                        {
+                            showSign(savedGestures[System.Int32.Parse(res.name)].points);
                         }
                     }
                 }
@@ -156,11 +162,17 @@ public class Player : MonoBehaviour
                             Result res;
                             if (gestureRecognitionController.isSignOk(points, out res))
                             {
-                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
-
-                                if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                if (dotSpawner._Mode == DotSpawner.ModeSpawner.locked)
                                 {
-                                    hasDoneUnlockSign = true;
+                                    if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                    {
+                                        hasDoneUnlockSign = true;
+                                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    }
+                                }
+                                else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
+                                {
+                                    showSign(savedGestures[System.Int32.Parse(res.name)].points);
                                 }
                             }
                         }
