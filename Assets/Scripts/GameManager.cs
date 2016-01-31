@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private float startTimer;
     private bool started;
     private bool unlocked;
+    private float sleepTimer;
 
     private GameManager() { }
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         startTimer = 0f;
         started = false;
         unlocked = false;
+        Screen.sleepTimeout = 10;
 	}
 	
 	void Update ()
@@ -59,7 +61,12 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            
+            if (player.sleepTimer >= 10f)
+            {
+                dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
+                unlocked = false;
+                player.hasDoneUnlockSign = false;
+            }
         }
 	}
 }

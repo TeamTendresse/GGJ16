@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<Gesture> savedGestures;
     private float OnGuiTimer;
-    public bool hasDoneUnlockSign { get; private set; }
+    public bool hasDoneUnlockSign { get; set; }
+    public float sleepTimer { get; private set; }
 
     void Start ()
     {
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
         lastMousePosition = Vector2.zero;
         nextId = 0;
         hasDoneUnlockSign = false;
+        sleepTimer = 0f;
     }
     
     void OnGUI ()
@@ -90,6 +92,7 @@ public class Player : MonoBehaviour
         {
             points.Clear();
             isDown = true;
+            sleepTimer = 0f;
         }
 
         if (isDown)
@@ -101,6 +104,7 @@ public class Player : MonoBehaviour
                 points.Add(mousePosition);
                 lastMousePosition = mousePosition;
             }
+            sleepTimer = 0f;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -128,6 +132,7 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+            sleepTimer = 0f;
         }
 #endif
 
@@ -179,8 +184,10 @@ public class Player : MonoBehaviour
                     }
                     break;
             }
+            sleepTimer = 0f;
         }
 #endif
+        sleepTimer += Time.deltaTime;
     }
 
     public List<Vector2> getGesturePoints(int id){
