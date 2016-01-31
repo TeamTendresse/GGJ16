@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class MicInput : MonoBehaviour {
- 
+    /*
     public static float MicLoudness;
     public static float avgLoudness ;
 
@@ -110,5 +110,5 @@ public class MicInput : MonoBehaviour {
             _isInitialized=false;
          
         }
-    }
+    }*/
 }
