@@ -57,9 +57,9 @@ public class SoundFeerie : MonoBehaviour {
     public void setSilence(bool t){
         silence = t ;
         if(silence){
-            fondSonore.Stop() ;
+            //fondSonore.Stop() ;
         }else if(!fondSonore.isPlaying){
-            fondSonore.Play() ;
+            //fondSonore.Play() ;
         }
     }
 }

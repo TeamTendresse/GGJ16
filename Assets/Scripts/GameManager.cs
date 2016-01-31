@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     private Player player;
+    private Profile profile;
     private DotSpawner dotSpawner;
-    private SoundFeerie soundFeerie;
+    private FeerieSpawner feerieSpawner;
     private Text message;
     private Button[] timeButtons;
 
@@ -31,14 +32,15 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
         player = GameObject.FindObjectOfType<Player>();
+        profile = GameObject.FindObjectOfType<Profile>();
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
-        soundFeerie = GameObject.FindObjectOfType<SoundFeerie>();
+        feerieSpawner = GameObject.FindObjectOfType<FeerieSpawner>();
         message = GameObject.Find("Message").GetComponent<Text>();
         timeButtons = RectTransform.FindObjectsOfType<Button>();
 
         hideButtons();
         dotSpawner.setMode(DotSpawner.ModeSpawner.silent);
-        soundFeerie.setSilence(true);
+        //feerieSpawner.setSilence(true);
         startTimer = 0f;
         started = false;
         unlocked = false;
@@ -55,7 +57,7 @@ public class GameManager : MonoBehaviour
                 message.enabled = false;
                 started = true;
                 dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
-                soundFeerie.setSilence(false);
+                feerieSpawner.setSilence(false);
                 showButtons();
             }
             startTimer += Time.deltaTime;
@@ -83,11 +85,17 @@ public class GameManager : MonoBehaviour
 
     void showButtons ()
     {
-        for (int i = 0; i < timeButtons.Length; i++)
+        timeButtons[0].enabled = true;
+        timeButtons[0].GetComponent<Image>().enabled = true;
+        timeButtons[0].GetComponentInChildren<Text>().enabled = true;
+        for (int i = 1; i < timeButtons.Length; i++)
         {
-            timeButtons[i].enabled = true;
-            timeButtons[i].GetComponent<Image>().enabled = true;
-            timeButtons[i].GetComponentInChildren<Text>().enabled = true;
+            if (Mathf.FloorToInt(profile.score / 5) >= i)
+            {
+                timeButtons[i].enabled = true;
+                timeButtons[i].GetComponent<Image>().enabled = true;
+                timeButtons[i].GetComponentInChildren<Text>().enabled = true;
+            }
         }
     }
 
