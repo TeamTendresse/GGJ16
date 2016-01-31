@@ -161,7 +161,7 @@
 					rayon *= p1;
 				}
 				
-				if (_Fadeout > 0)
+				//if (_Fadeout > 0)
 					alpha *= 1 - p1;
 
 				return alpha ;	

@@ -48,18 +48,20 @@ public class DotSpawner : MonoBehaviour {
         subDot.GetComponent<Animator>().SetTrigger("First");
         lastDot = dot;
     }
-    
-    public void showSign(List<Vector2> points)
+
+    private IEnumerator makeSign(List<Vector2> points)
     {
+        bool inverty = true;
         //Max and min
         float minx = Mathf.Infinity;
         float miny = Mathf.Infinity;
         float maxx = 0;
         float maxy = 0;
-        
+
         for (int i = 0; i < points.Count; i++)
         {
-            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, points[i].y, 1));
+            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, Screen.height-points[i].y, 1));
+
             if (pointPos.x > maxx) maxx = pointPos.x;
             if (pointPos.y > maxy) maxy = pointPos.y;
             if (pointPos.x < minx) minx = pointPos.x;
@@ -70,8 +72,8 @@ public class DotSpawner : MonoBehaviour {
         offset.x = (maxx + minx) / 2;
         offset.y = (maxy + miny) / 2;
         Debug.Log(offset);
-       
-        if (!hasMoved && lastDot)
+
+        if (lastDot)
         {
             lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
             lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
@@ -79,30 +81,38 @@ public class DotSpawner : MonoBehaviour {
             started = true;
         }
 
-        CurrentColor = getNewColor();
-        setCamInvertColor(CurrentColor);
-
+        //Save it cause coroutine so changes
+        Color currentColor = CurrentColor; 
+        
         lastDot = null;
         for (int i = 0; i < points.Count; i++)
         {
-            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, points[i].y, 1));
+            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, Screen.height - points[i].y, 1));
             pointPos -= offset;
+           
             if (lastDot == null || Vector3.Distance(pointPos, lastDot.position) > distance)
             {
                 Transform dot = GameObject.Instantiate(prefabDot, pointPos, Quaternion.identity) as Transform;
                 Transform subDot = dot.GetChild(0);
                 subDot.localScale = new Vector3(0, 0, 1);
                 subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
-                subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
-                subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1,0,0) : pointPos - lastDot.position;
+                subDot.GetComponent<Renderer>().material.SetColor("_Color", currentColor);
+                subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1, 0, 0) : pointPos - lastDot.position;
                 subDot.GetComponent<Dot>().SendWorldScaleToShader();
                 subDot.GetComponent<Animator>().SetTrigger("Dis");
                 lastDot = dot;
+                yield return new WaitForSeconds(0.01f);
             }
-            
 
             
+
         }
+        
+    }
+
+    public void showSign(List<Vector2> points)
+    {
+        StartCoroutine("makeSign", points);
     }
 
     void  Update () {
