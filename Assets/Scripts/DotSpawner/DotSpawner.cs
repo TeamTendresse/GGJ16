@@ -25,7 +25,7 @@ public class DotSpawner : MonoBehaviour {
         locked,
         unlocked
     };
-    ModeSpawner _Mode = ModeSpawner.locked;
+    public ModeSpawner _Mode = ModeSpawner.silent;
 
 
     public void setParams(Dot.DotType type, bool fadeout, bool invert)
@@ -69,10 +69,17 @@ public class DotSpawner : MonoBehaviour {
 
     public void setMode(ModeSpawner mode)
     {
-        if(mode != _Mode)
-        {
+        
+        
+            _Mode = mode;
+            if (mode == ModeSpawner.silent)
+            {
+                killLastDot();
+                
+            }
 
-        }
+            CurrentColor = getNewColor();
+        
     }
 
     private IEnumerator makeSign(List<Vector2> points)

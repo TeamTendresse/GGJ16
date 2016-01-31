@@ -3,11 +3,10 @@ using System.Collections;
 
 public class FeerieSpawner : MonoBehaviour {
 	public GameObject[] SoundFeeries ;
-	public int id ;
 	// Use this for initialization
 	void Start () {
 		int tirage = (int)Random.Range(0, SoundFeeries.Length);
-		selectSound(id) ;
+		selectSound(tirage) ;
 	}
 	
 	// Update is called once per frame
