@@ -53,9 +53,9 @@ public class GestureRecognitionController : MonoBehaviour
         dollarRecognizer.addGesture(id.ToString(), points);
     }
 
-    public bool isSignOk (List<Vector2> points)
+    public bool isSignOk (List<Vector2> points, out Result res)
     {
-        Result res = dollarRecognizer.recognize(points, false);
+        res = dollarRecognizer.recognize(points, false);
         if (res.score > minRecognitionScore)
         {
             Debug.Log("Sign recognized : " + res.name);

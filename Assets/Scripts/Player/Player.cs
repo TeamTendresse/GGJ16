@@ -108,9 +108,10 @@ public class Player : MonoBehaviour
                 isDown = false;
                 if (points.Count >= minGestureLength)
                 {
-                    if (gestureRecognitionController.isSignOk(points))
+                    Result res;
+                    if (gestureRecognitionController.isSignOk(points, out res))
                     {
-                        showSign();
+                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
                     }
                 }
             }
@@ -162,8 +163,9 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    private void showSign ()
+    private void showSign (List<Vector2> points)
     {
         feedbacks.playVictory() ;
+        dotSpawner.showSign(points);
     }
 }
