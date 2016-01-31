@@ -130,7 +130,10 @@ public class Player : MonoBehaviour
                         }
                         else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
                         {
-                            showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            if (int.Parse(res.name) > 0)
+                            {
+                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            }
                         }
                     }
                 }
@@ -181,7 +184,10 @@ public class Player : MonoBehaviour
                                 }
                                 else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
                                 {
-                                    showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    if (int.Parse(res.name) > 0)
+                                    {
+                                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    }
                                 }
                             }
                         }
