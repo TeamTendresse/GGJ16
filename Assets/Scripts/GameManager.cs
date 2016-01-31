@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private GameManager _instance;
+    private static GameManager _instance;
 
     private Player player;
     private DotSpawner dotSpawner;
+    private SoundFeerie soundFeerie;
     private Text message;
     private Button[] timeButtons;
 
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private GameManager() { }
 
-    public GameManager instance ()
+    public static GameManager instance ()
     {
         if (_instance == null)
         {
@@ -31,15 +32,18 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<Player>();
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
+        soundFeerie = GameObject.FindObjectOfType<SoundFeerie>();
         message = GameObject.Find("Message").GetComponent<Text>();
         timeButtons = RectTransform.FindObjectsOfType<Button>();
 
         hideButtons();
         dotSpawner.setMode(DotSpawner.ModeSpawner.silent);
+        soundFeerie.setSilence(true);
         startTimer = 0f;
         started = false;
         unlocked = false;
         Screen.sleepTimeout = 10;
+        
 	}
 	
 	void Update ()
@@ -51,6 +55,8 @@ public class GameManager : MonoBehaviour
                 message.enabled = false;
                 started = true;
                 dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
+                soundFeerie.setSilence(false);
+                showButtons();
             }
             startTimer += Time.deltaTime;
         }
@@ -60,7 +66,7 @@ public class GameManager : MonoBehaviour
             {
                 unlocked = true;
                 dotSpawner.setMode(DotSpawner.ModeSpawner.unlocked);
-                showButtons();
+                hideButtons();
             }
         }
         else
@@ -70,7 +76,7 @@ public class GameManager : MonoBehaviour
                 dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
                 unlocked = false;
                 player.hasDoneUnlockSign = false;
-                hideButtons();
+                showButtons();
             }
         }
 	}
@@ -93,5 +99,13 @@ public class GameManager : MonoBehaviour
             timeButtons[i].GetComponent<Image>().enabled = false;
             timeButtons[i].GetComponentInChildren<Text>().enabled = false;
         }
+    }
+
+    public void lockApp ()
+    {
+        dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
+        unlocked = false;
+        player.hasDoneUnlockSign = false;
+        showButtons();
     }
 }

@@ -98,6 +98,11 @@ public class Player : MonoBehaviour
             hasTouched = true;
         }
 
+        if (Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1))
+        {
+            GameManager.instance().lockApp();
+        }
+
         if (isDown)
         {
             Vector2 mousePosition = Input.mousePosition;
@@ -130,7 +135,10 @@ public class Player : MonoBehaviour
                         }
                         else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
                         {
-                            showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            if (int.Parse(res.name) > 0)
+                            {
+                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            }
                         }
                     }
                 }
@@ -143,6 +151,11 @@ public class Player : MonoBehaviour
 #if UNITY_ANDROID
         if (Input.touchCount > 0)
         {
+            if (Input.touchCount > 2)
+            {
+                GameManager.instance().lockApp();
+            }
+
             Touch touch = Input.GetTouch(0);
             switch (touch.phase)
             {
@@ -181,7 +194,10 @@ public class Player : MonoBehaviour
                                 }
                                 else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
                                 {
-                                    showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    if (int.Parse(res.name) > 0)
+                                    {
+                                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    }
                                 }
                             }
                         }

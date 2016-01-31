@@ -9,7 +9,7 @@ public class SoundFeerie : MonoBehaviour {
     float zoneH ;
     float zoneV ;
     int zone ;
-    private bool silence = false ;
+    private bool silence = true ;
 
     void Start () {
         int height = Screen.height ;
@@ -25,6 +25,7 @@ public class SoundFeerie : MonoBehaviour {
         }
 
         fondSonore = GameObject.FindObjectOfType<FeerieSpawner>().GetComponent<AudioSource>() ;
+        setSilence(silence) ;
     }
 
     // Update is called once per frame
@@ -55,7 +56,7 @@ public class SoundFeerie : MonoBehaviour {
 
     public void setSilence(bool t){
         silence = t ;
-        if(!silence){
+        if(silence){
             fondSonore.Stop() ;
         }else if(!fondSonore.isPlaying){
             fondSonore.Play() ;
