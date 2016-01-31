@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class DotSpawner : MonoBehaviour {
 
@@ -47,9 +48,64 @@ public class DotSpawner : MonoBehaviour {
         subDot.GetComponent<Animator>().SetTrigger("First");
         lastDot = dot;
     }
+    
+    public void showSign(List<Vector2> points)
+    {
+        //Max and min
+        float minx = Mathf.Infinity;
+        float miny = Mathf.Infinity;
+        float maxx = 0;
+        float maxy = 0;
+        
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, points[i].y, 1));
+            if (pointPos.x > maxx) maxx = pointPos.x;
+            if (pointPos.y > maxy) maxy = pointPos.y;
+            if (pointPos.x < minx) minx = pointPos.x;
+            if (pointPos.y < miny) miny = pointPos.y;
 
+        }
+        Vector3 offset = new Vector3();
+        offset.x = (maxx + minx) / 2;
+        offset.y = (maxy + miny) / 2;
+        Debug.Log(offset);
+       
+        if (!hasMoved && lastDot)
+        {
+            lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
+            lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
+            lastDot.GetChild(0).GetComponent<Dot>().kill = true;
+            started = true;
+        }
 
-    void   Update () {
+        CurrentColor = getNewColor();
+        setCamInvertColor(CurrentColor);
+
+        lastDot = null;
+        for (int i = 0; i < points.Count; i++)
+        {
+            Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, points[i].y, 1));
+            pointPos -= offset;
+            if (lastDot == null || Vector3.Distance(pointPos, lastDot.position) > distance)
+            {
+                Transform dot = GameObject.Instantiate(prefabDot, pointPos, Quaternion.identity) as Transform;
+                Transform subDot = dot.GetChild(0);
+                subDot.localScale = new Vector3(0, 0, 1);
+                subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
+                subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
+                subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1,0,0) : pointPos - lastDot.position;
+                subDot.GetComponent<Dot>().SendWorldScaleToShader();
+                subDot.GetComponent<Animator>().SetTrigger("Dis");
+                lastDot = dot;
+            }
+            
+
+            
+        }
+    }
+
+    void  Update () {
 
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = 0;
@@ -110,6 +166,5 @@ public class DotSpawner : MonoBehaviour {
             if (typeInt == 2) type = Dot.DotType.dotDragon;
             setParams(type, Random.Range(0, 2) == 0, Random.Range(0, 2) == 0);
         }
-
     }
 }
