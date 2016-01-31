@@ -19,15 +19,6 @@ public class DotSpawner : MonoBehaviour {
     bool invert = false;
     Dot.DotType dotType = Dot.DotType.dotCircle;
 
-    public enum ModeSpawner
-    {
-        silent,
-        locked,
-        unlocked
-    };
-    ModeSpawner _Mode = ModeSpawner.locked;
-
-
     public void setParams(Dot.DotType type, bool fadeout, bool invert)
     {
         this.fadeout = fadeout;
@@ -37,11 +28,6 @@ public class DotSpawner : MonoBehaviour {
 
     Color getNewColor()
     {
-        if (_Mode == ModeSpawner.locked || _Mode == ModeSpawner.silent)
-        {
-            return new Color(0, 0, 0, 0);
-        }
-
         return new Color(Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), Random.Range(0.6f, 0.9f), 0);
     }
 
@@ -54,25 +40,14 @@ public class DotSpawner : MonoBehaviour {
     void Start () {
         CurrentColor = getNewColor();
         setCamInvertColor(CurrentColor);
-        if (_Mode != ModeSpawner.silent)
-        {
-            Transform dot = GameObject.Instantiate(prefabDot, new Vector3(0, 0, 0), Quaternion.identity) as Transform;
-            Transform subDot = dot.GetChild(0);
-            subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
-            subDot.localScale = new Vector3(0, 0, 1);
-            subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
-            subDot.GetComponent<Dot>().SendWorldScaleToShader();
-            subDot.GetComponent<Animator>().SetTrigger("First");
-            lastDot = dot;
-        }
-    }
-
-    public void setMode(ModeSpawner mode)
-    {
-        if(mode != _Mode)
-        {
-
-        }
+        Transform dot = GameObject.Instantiate(prefabDot, new Vector3(0,0,0), Quaternion.identity) as Transform;
+        Transform subDot = dot.GetChild(0);
+        subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
+        subDot.localScale = new Vector3(0, 0, 1);
+        subDot.GetComponent<Renderer>().material.SetColor("_Color", CurrentColor);
+        subDot.GetComponent<Dot>().SendWorldScaleToShader();
+        subDot.GetComponent<Animator>().SetTrigger("First");
+        lastDot = dot;
     }
 
     private IEnumerator makeSign(List<Vector2> points)
@@ -141,24 +116,7 @@ public class DotSpawner : MonoBehaviour {
         StartCoroutine("makeSign", points);
     }
 
-    void killLastDot()
-    {
-        if(lastDot)
-        {
-            lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
-            lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
-            lastDot.GetChild(0).GetComponent<Dot>().kill = true;
-        }
-    }
-
     void  Update () {
-
-        if (_Mode == ModeSpawner.silent)
-        {
-            killLastDot();
-            return;
-        }
-            
 
         Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         pos.z = 0;
@@ -186,7 +144,9 @@ public class DotSpawner : MonoBehaviour {
         {
             if (!hasMoved && lastDot)
             {
-                killLastDot();
+                lastDot.GetChild(0).GetComponent<Animator>().SetTrigger("Dis");
+                lastDot.GetChild(0).GetComponent<Animator>().speed = 10;
+                lastDot.GetChild(0).GetComponent<Dot>().kill = true;
                 started = true;
             }
 
@@ -215,10 +175,7 @@ public class DotSpawner : MonoBehaviour {
             Dot.DotType type = Dot.DotType.dotCircle;
             if (typeInt == 1) type = Dot.DotType.dotScale;
             if (typeInt == 2) type = Dot.DotType.dotDragon;
-            if(_Mode == ModeSpawner.locked)
-                setParams(Dot.DotType.dotScale, true, false);
-            else
-                setParams(type, Random.Range(0, 2) == 0, Random.Range(0, 2) == 0);
+            setParams(type, Random.Range(0, 2) == 0, Random.Range(0, 2) == 0);
         }
     }
 }
