@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
 #if UNITY_ANDROID
         if (Input.touchCount > 0)
         {
-            if (Input.touchCount > 2)
+            if (Input.touchCount >= 2)
             {
                 GameManager.instance().lockApp();
             }
