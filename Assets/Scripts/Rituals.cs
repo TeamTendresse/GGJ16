@@ -23,4 +23,9 @@ public class Rituals : MonoBehaviour
             
         }
 	}
+
+    public void showSign (int signId)
+    {
+        player.showSignFromId(signId);
+    }
 }

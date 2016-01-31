@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private Player player;
     private DotSpawner dotSpawner;
     private Text message;
+    private Button[] timeButtons;
 
     private float startTimer;
     private bool started;
@@ -30,8 +31,10 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<Player>();
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
-        message = RectTransform.FindObjectOfType<Text>();
+        message = GameObject.Find("Message").GetComponent<Text>();
+        timeButtons = RectTransform.FindObjectsOfType<Button>();
 
+        hideButtons();
         dotSpawner.setMode(DotSpawner.ModeSpawner.silent);
         startTimer = 0f;
         started = false;
@@ -43,7 +46,7 @@ public class GameManager : MonoBehaviour
     {
         if (!started)
         {
-            if (startTimer >= 2f)
+            if (startTimer >= 2f || player.hasTouched)
             {
                 message.enabled = false;
                 started = true;
@@ -57,6 +60,7 @@ public class GameManager : MonoBehaviour
             {
                 unlocked = true;
                 dotSpawner.setMode(DotSpawner.ModeSpawner.unlocked);
+                showButtons();
             }
         }
         else
@@ -66,7 +70,28 @@ public class GameManager : MonoBehaviour
                 dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
                 unlocked = false;
                 player.hasDoneUnlockSign = false;
+                hideButtons();
             }
         }
 	}
+
+    void showButtons ()
+    {
+        for (int i = 0; i < timeButtons.Length; i++)
+        {
+            timeButtons[i].enabled = true;
+            timeButtons[i].GetComponent<Image>().enabled = true;
+            timeButtons[i].GetComponentInChildren<Text>().enabled = true;
+        }
+    }
+
+    void hideButtons()
+    {
+        for (int i = 0; i < timeButtons.Length; i++)
+        {
+            timeButtons[i].enabled = false;
+            timeButtons[i].GetComponent<Image>().enabled = false;
+            timeButtons[i].GetComponentInChildren<Text>().enabled = false;
+        }
+    }
 }
