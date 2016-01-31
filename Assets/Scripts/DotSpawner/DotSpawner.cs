@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//Mise a jour
 public class DotSpawner : MonoBehaviour {
 
     public Transform prefabDot;
