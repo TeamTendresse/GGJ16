@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private GameManager _instance;
+    private static GameManager _instance;
 
     private Player player;
     private DotSpawner dotSpawner;
@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private GameManager() { }
 
-    public GameManager instance ()
+    public static GameManager instance ()
     {
         if (_instance == null)
         {
