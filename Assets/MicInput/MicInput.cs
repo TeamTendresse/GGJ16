@@ -24,7 +24,7 @@ public class MicInput : MonoBehaviour {
  
 
     AudioClip _clipRecord = new AudioClip();
-    int _sampleWindow = 256;
+    int _sampleWindow = 128;
    	Queue<float> loudness = new Queue<float>();
 
 

@@ -12,6 +12,7 @@ public class checkLoudness : MonoBehaviour {
     public float duration = 3.0F;
 	Camera camera ;
 	public Text count ;
+	private Player player;
 
 	float objectiveTime ;
 
@@ -21,7 +22,8 @@ public class checkLoudness : MonoBehaviour {
     	camera.clearFlags = CameraClearFlags.SolidColor;
     	color1 = color_silent ;
     	color2 = color_silent2 ;
-    	objectiveTime = Time.time + 60f*5f + 1f ;
+    	objectiveTime = Time.time + 10f*1f + 1f ;
+    	player = GameObject.FindObjectOfType<Player>();
 	}
 	
 	int status = 0 ;
@@ -39,7 +41,7 @@ public class checkLoudness : MonoBehaviour {
 		
 		if(MicInput.avgLoudness != -1f && !toSilent && !toNoise){
 			//Debug.Log(MicInput.avgLoudness) ;
-			if(MicInput.avgLoudness >= 0.03f){
+			if(MicInput.avgLoudness >= 0.02f){
 				if(status == 0){
 					//Debug.Log("to noise") ;
 					toNoise = true ;
@@ -81,7 +83,8 @@ public class checkLoudness : MonoBehaviour {
 		}
 
 		if(Time.time >= objectiveTime){
-			Debug.Log("well done!") ;
+			player.showSign(player.getGesturePoints(0)) ;
+			Invoke("Application.LoadLevel("Game")",5f);
 		}
 	}
 }

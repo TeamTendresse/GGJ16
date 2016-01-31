@@ -159,12 +159,16 @@ public class Player : MonoBehaviour
 #endif
     }
 
+    public List<Vector2> getGesturePoints(int id){
+        return savedGestures[id].points ;
+    }
+
     public bool hasDoneSigned ()
     {
         return false;
     }
 
-    private void showSign (List<Vector2> points)
+    public void showSign (List<Vector2> points)
     {
         feedbacks.playVictory() ;
         dotSpawner.showSign(points);
