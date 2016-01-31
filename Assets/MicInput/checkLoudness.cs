@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class checkLoudness : MonoBehaviour {
@@ -10,6 +11,7 @@ public class checkLoudness : MonoBehaviour {
     private Color color2 ;
     public float duration = 3.0F;
 	Camera camera ;
+	public Text count ;
 
 	float objectiveTime ;
 
@@ -19,7 +21,7 @@ public class checkLoudness : MonoBehaviour {
     	camera.clearFlags = CameraClearFlags.SolidColor;
     	color1 = color_silent ;
     	color2 = color_silent2 ;
-    	objectiveTime = Time.time + 60f*5f ;
+    	objectiveTime = Time.time + 60f*5f + 1f ;
 	}
 	
 	int status = 0 ;
@@ -29,6 +31,8 @@ public class checkLoudness : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+		int tRest = (int)(objectiveTime-Time.time) ;
+		count.text = tRest.ToString() ;
 		float t = Mathf.PingPong(Time.time, duration) / duration;
 		if(t-lastT > 0f && t>=0.99f)t=1f;
 		if(t-lastT < 0f && t<=0.01f)t=0f;
