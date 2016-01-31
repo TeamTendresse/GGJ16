@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     private Player player;
     private DotSpawner dotSpawner;
-    private SoundFeerie soundFeerie;
+    private FeerieSpawner feerieSpawner;
     private Text message;
     private Button[] timeButtons;
 
@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<Player>();
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
-        soundFeerie = GameObject.FindObjectOfType<SoundFeerie>();
+        feerieSpawner = GameObject.FindObjectOfType<FeerieSpawner>();
         message = GameObject.Find("Message").GetComponent<Text>();
         timeButtons = RectTransform.FindObjectsOfType<Button>();
 
         hideButtons();
         dotSpawner.setMode(DotSpawner.ModeSpawner.silent);
-        soundFeerie.setSilence(true);
+        feerieSpawner.setSilence(true);
         startTimer = 0f;
         started = false;
         unlocked = false;
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
                 message.enabled = false;
                 started = true;
                 dotSpawner.setMode(DotSpawner.ModeSpawner.locked);
-                soundFeerie.setSilence(false);
+                feerieSpawner.setSilence(false);
                 showButtons();
             }
             startTimer += Time.deltaTime;
