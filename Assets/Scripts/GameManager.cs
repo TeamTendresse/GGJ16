@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
         hideButtons();
         dotSpawner.setMode(DotSpawner.ModeSpawner.silent);
-        feerieSpawner.setSilence(true);
+        //feerieSpawner.setSilence(true);
         startTimer = 0f;
         started = false;
         unlocked = false;
