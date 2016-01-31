@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<Gesture> savedGestures;
     private float OnGuiTimer;
+    public bool hasDoneUnlockSign { get; private set; }
 
     void Start ()
     {
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
         isDown = false;
         lastMousePosition = Vector2.zero;
         nextId = 0;
+        hasDoneUnlockSign = false;
     }
     
     void OnGUI ()
@@ -112,6 +114,14 @@ public class Player : MonoBehaviour
                     if (gestureRecognitionController.isSignOk(points, out res))
                     {
                         showSign(savedGestures[System.Int32.Parse(res.name)].points);
+
+                        if (!hasDoneUnlockSign)
+                        {
+                            if (int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                            {
+                                hasDoneUnlockSign = true;
+                            }
+                        }
                     }
                 }
             }
@@ -150,6 +160,14 @@ public class Player : MonoBehaviour
                             if (gestureRecognitionController.isSignOk(points, out res))
                             {
                                 showSign(savedGestures[System.Int32.Parse(res.name)].points);
+
+                                if (!hasDoneUnlockSign)
+                                {
+                                    if (int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                    {
+                                        hasDoneUnlockSign = true;
+                                    }
+                                }
                             }
                         }
                     }
@@ -157,11 +175,6 @@ public class Player : MonoBehaviour
             }
         }
 #endif
-    }
-
-    public bool hasDoneSigned ()
-    {
-        return false;
     }
 
     private void showSign (List<Vector2> points)
