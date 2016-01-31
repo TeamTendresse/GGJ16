@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &114292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 450824}
+  - 114: {fileID: 11437892}
+  m_Layer: 0
+  m_Name: SoundFeerie_pause
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &450824
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114292}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11437892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 114292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ae63abb6b3c6d44e95eaa36c629150e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - {fileID: 8300000, guid: 4d1e71f599069cb4784c314baf6f17cd, type: 3}
+  - {fileID: 8300000, guid: fb4c99f1703975a43bc77b42da7194b7, type: 3}
+  - {fileID: 8300000, guid: d8bd4c7582734e747af99247f4987b14, type: 3}
+  - {fileID: 8300000, guid: 28b426659329d344f84dd88dbbc3470b, type: 3}
+  - {fileID: 8300000, guid: 9a8b5a23bd1f9dc4fae7de03bead5108, type: 3}
+  - {fileID: 8300000, guid: aca9c05184ce0de439c38033b4fb9bd8, type: 3}
+  - {fileID: 8300000, guid: 4034b71f6a2584c4894b7118162e2c77, type: 3}
+  - {fileID: 8300000, guid: b4cf69a800f9958409cf1d5fe8e77a61, type: 3}
+  - {fileID: 8300000, guid: 671d9a396a7bd0848b7f9a3749eee07a, type: 3}
+  audio:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  randSound: 1
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 114292}
+  m_IsPrefabParent: 1
