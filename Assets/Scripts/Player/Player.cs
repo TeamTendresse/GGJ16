@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     public bool isSavingGestures;
     public float minGestureLength;
-    public Feedbacks feedbacks ;
+    public Feedbacks feedbacks;
 
     private GestureRecognitionController gestureRecognitionController;
     private DotSpawner dotSpawner;
@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<Gesture> savedGestures;
     private float OnGuiTimer;
+    public bool hasDoneUnlockSign { get; private set; }
 
     void Start ()
     {
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour
         isDown = false;
         lastMousePosition = Vector2.zero;
         nextId = 0;
+        hasDoneUnlockSign = false;
     }
     
     void OnGUI ()
@@ -112,6 +114,11 @@ public class Player : MonoBehaviour
                     if (gestureRecognitionController.isSignOk(points, out res))
                     {
                         showSign(savedGestures[System.Int32.Parse(res.name)].points);
+
+                        if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                        {
+                            hasDoneUnlockSign = true;
+                        }
                     }
                 }
             }
@@ -150,6 +157,11 @@ public class Player : MonoBehaviour
                             if (gestureRecognitionController.isSignOk(points, out res))
                             {
                                 showSign(savedGestures[System.Int32.Parse(res.name)].points);
+
+                                if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                {
+                                    hasDoneUnlockSign = true;
+                                }
                             }
                         }
                     }
@@ -160,12 +172,7 @@ public class Player : MonoBehaviour
     }
 
     public List<Vector2> getGesturePoints(int id){
-        return savedGestures[id].points ;
-    }
-
-    public bool hasDoneSigned ()
-    {
-        return false;
+        return savedGestures[id].points;
     }
 
     public void showSign (List<Vector2> points)
