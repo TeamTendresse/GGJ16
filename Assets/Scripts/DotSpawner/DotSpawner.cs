@@ -139,6 +139,7 @@ public class DotSpawner : MonoBehaviour {
                 subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1, 0, 0) : pointPos - lastDot.position;
                 subDot.GetComponent<Dot>().SendWorldScaleToShader();
                 subDot.GetComponent<Animator>().SetTrigger("Dis");
+                subDot.GetComponent<Dot>().kill = true;
                 lastDot = dot;
                 yield return new WaitForSeconds(0.01f);
             }
@@ -216,6 +217,7 @@ public class DotSpawner : MonoBehaviour {
             setCamInvertColor(CurrentColor);
             Transform dot = GameObject.Instantiate(prefabDot, pos,Quaternion.identity) as Transform;
             Transform subDot = dot.GetChild(0);
+            subDot.localScale = new Vector3(0, 0, 1);
             subDot.GetComponent<Dot>().setParams(dotType, fadeout, invert);
             subDot.GetComponent<Animator>().SetTrigger("Dis");
             subDot.GetComponent<Renderer>().material.SetColor("_Color",CurrentColor);
