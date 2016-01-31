@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 447162}
   - 114: {fileID: 11454696}
+  - 82: {fileID: 8235494}
   m_Layer: 0
   m_Name: SoundSpawner
   m_TagString: Untagged
@@ -28,6 +29,80 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!82 &8235494
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 172444}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: b063de97b70b1d84785e96368b11eab6, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.6
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!114 &11454696
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -48,6 +123,8 @@ MonoBehaviour:
   - {fileID: 103284, guid: 3826bebb06ba5674ea49dc33cc854866, type: 2}
   - {fileID: 112564, guid: e4cdb86d9f6ecb547977f971a242887b, type: 2}
   - {fileID: 123138, guid: 04b0331a21feb1f48b77469704f9c7fd, type: 2}
+  - {fileID: 147754, guid: 988227f1f3ce466428b2239bed7df56f, type: 2}
+  id: 4
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
