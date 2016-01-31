@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     private Player player;
+    private Profile profile;
     private DotSpawner dotSpawner;
     private FeerieSpawner feerieSpawner;
     private Text message;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
 	void Start ()
     {
         player = GameObject.FindObjectOfType<Player>();
+        profile = GameObject.FindObjectOfType<Profile>();
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
         feerieSpawner = GameObject.FindObjectOfType<FeerieSpawner>();
         message = GameObject.Find("Message").GetComponent<Text>();
@@ -83,11 +85,17 @@ public class GameManager : MonoBehaviour
 
     void showButtons ()
     {
-        for (int i = 0; i < timeButtons.Length; i++)
+        timeButtons[0].enabled = true;
+        timeButtons[0].GetComponent<Image>().enabled = true;
+        timeButtons[0].GetComponentInChildren<Text>().enabled = true;
+        for (int i = 1; i < timeButtons.Length; i++)
         {
-            timeButtons[i].enabled = true;
-            timeButtons[i].GetComponent<Image>().enabled = true;
-            timeButtons[i].GetComponentInChildren<Text>().enabled = true;
+            if (Mathf.FloorToInt(profile.score / 5) >= i)
+            {
+                timeButtons[i].enabled = true;
+                timeButtons[i].GetComponent<Image>().enabled = true;
+                timeButtons[i].GetComponentInChildren<Text>().enabled = true;
+            }
         }
     }
 
