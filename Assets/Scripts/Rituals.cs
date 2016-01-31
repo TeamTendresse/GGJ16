@@ -11,7 +11,7 @@ public class Rituals : MonoBehaviour
     private FeerieSpawner feerieSpawner;
 
     private float checkHour ;
-    private int actualRitual ;
+    private int actualRitual = 10 ;
 
     void Start ()
     {
@@ -26,27 +26,34 @@ public class Rituals : MonoBehaviour
 	
 	void Update ()
     {
-        if(checkHour <= Time.time){
+        if(checkHour >= Time.time){
             setTheRituals() ;
         }
 	}
 
     public void setTheRituals(){
-        actualRitual = 0 ;
+        bool ritual = false ;
         int currentHour = int.Parse(string.Format("{0:HH}", System.DateTime.Now));
         //hour = ampm == "AM" ? hour : (hour % 12) + 12;
         for (int i = 0; i < times.Length; i++)
         {
             if (currentHour >= times[i].x && currentHour <= times[i].y)
             {
+                ritual = true ;
                 if(i+1 != actualRitual){
                     actualRitual = i+1 ;
                     feerieSpawner.selectSound(actualRitual) ;
                 }
             }
         }
-        Debug.Log(currentHour + " " + actualRitual) ;
-        checkHour = Time.time +60f ;
+
+        if(!ritual && actualRitual != 0){
+            actualRitual = 0 ;
+            feerieSpawner.selectSound(actualRitual) ;
+        }
+        //Debug.Log(currentHour + " " + actualRitual) ;
+
+        checkHour = Time.time +60f*60f ;
     }
 
     public bool isTheRightTime (int signId)

@@ -13,6 +13,7 @@ public class FeerieSpawner : MonoBehaviour {
 	// Update is called once per frame
 	public void selectSound(int id){
 		if(SF != null){
+			//Debug.Log("destroy") ;
 			Destroy(SF.gameObject) ;			
 		}
 		Instantiate(SoundFeeries[id], new Vector3(0, 0, 0), Quaternion.identity);
