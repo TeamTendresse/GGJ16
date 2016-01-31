@@ -10,6 +10,9 @@ public class Rituals : MonoBehaviour
 
     private FeerieSpawner feerieSpawner;
 
+    private float checkHour ;
+    private int actualRitual ;
+
     void Start ()
     {
         player = GameObject.FindObjectOfType<Player>();
@@ -18,26 +21,32 @@ public class Rituals : MonoBehaviour
         feerieSpawner = GameObject.FindObjectOfType<FeerieSpawner>();
 
         setTheRituals() ;
+        checkHour = Time.time+500f ;
     }
 	
 	void Update ()
     {
-        
+        if(checkHour <= Time.time){
+            setTheRituals() ;
+        }
 	}
 
     public void setTheRituals(){
-        int signId = 0 ;
+        actualRitual = 0 ;
         int currentHour = int.Parse(string.Format("{0:HH}", System.DateTime.Now));
         //hour = ampm == "AM" ? hour : (hour % 12) + 12;
         for (int i = 0; i < times.Length; i++)
         {
             if (currentHour >= times[i].x && currentHour <= times[i].y)
             {
-                signId = i+1 ;
+                if(i+1 != actualRitual){
+                    actualRitual = i+1 ;
+                    feerieSpawner.selectSound(actualRitual) ;
+                }
             }
         }
-        Debug.Log(currentHour + " " + signId) ;
-        feerieSpawner.selectSound(signId) ;
+        Debug.Log(currentHour + " " + actualRitual) ;
+        checkHour = Time.time +60f ;
     }
 
     public bool isTheRightTime (int signId)
