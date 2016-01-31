@@ -8,7 +8,7 @@ public class Profile : MonoBehaviour
     public string setScoreURL;
 
     private string id;
-    private int score;
+    public int score { get; private set; }
 
 	void Start ()
     {
