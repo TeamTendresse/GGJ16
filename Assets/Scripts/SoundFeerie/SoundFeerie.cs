@@ -4,10 +4,12 @@ using System.Collections;
 public class SoundFeerie : MonoBehaviour {
     public AudioClip[] sounds ;
     public AudioSource[] audio ;
+    public AudioSource fondSonore ;
     public bool randSound = false ;
     float zoneH ;
     float zoneV ;
     int zone ;
+    private bool silence = false ;
 
     void Start () {
         int height = Screen.height ;
@@ -21,29 +23,42 @@ public class SoundFeerie : MonoBehaviour {
             audio[i].loop = false ;
             audio[i].playOnAwake = false ;
         }
+
+        fondSonore = GameObject.FindObjectOfType<FeerieSpawner>().GetComponent<AudioSource>() ;
     }
 
     // Update is called once per frame
     void  Update () {
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pos.z = 0;
+        if(!silence){
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pos.z = 0;
 
-        if (Input.GetButton("Fire1") || Input.touchCount > 0){
-            int zoneX = (int)(Input.mousePosition.x/zoneH) ;
-            int zoneY = (int)(Input.mousePosition.y/zoneV) ;
-            
-            if(zoneX>2)zoneX=2;
-            if(zoneY>2)zoneY=2;
-            zone = (int)zoneX+6-(3*zoneY) ;
-            Debug.Log(zone) ;
-            if(!audio[zone].isPlaying){
-                audio[zone].loop = false ;
-                if(randSound){
-                    int tirage = (int)Random.Range(0, sounds.Length);
-                    audio[zone].clip = sounds[tirage] ;
+            if (Input.GetButton("Fire1") || Input.touchCount > 0){
+                int zoneX = (int)(Input.mousePosition.x/zoneH) ;
+                int zoneY = (int)(Input.mousePosition.y/zoneV) ;
+                
+                if(zoneX>2)zoneX=2;
+                if(zoneY>2)zoneY=2;
+                zone = (int)zoneX+6-(3*zoneY) ;
+                Debug.Log(zone) ;
+                if(!audio[zone].isPlaying){
+                    audio[zone].loop = false ;
+                    if(randSound){
+                        int tirage = (int)Random.Range(0, sounds.Length);
+                        audio[zone].clip = sounds[tirage] ;
+                    }
+                    audio[zone].Play();
                 }
-                audio[zone].Play();
             }
+        }
+    }
+
+    public void setSilence(bool t){
+        silence = t ;
+        if(!silence){
+            fondSonore.Stop() ;
+        }else if(!fondSonore.isPlaying){
+            fondSonore.Play() ;
         }
     }
 }
