@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class Feedbacks : MonoBehaviour {
-	AudioSource audioSrc ;
+
 	// Use this for initialization
 	void Start () {
-		audioSrc = gameObject.GetComponent<AudioSource>();
+		
 	}
 	
 	// Update is called once per frame
@@ -14,6 +14,7 @@ public class Feedbacks : MonoBehaviour {
 	}
 
 	public void playVictory(){
+		AudioSource audioSrc = gameObject.GetComponent<AudioSource>();
 		audioSrc.Play() ;
 	}
 }
