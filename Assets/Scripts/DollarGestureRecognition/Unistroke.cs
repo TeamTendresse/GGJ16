@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 public class Unistroke
 {
-    private DollarRecognizer dollarRecognizer;
-
     public string name { get; private set; }
     public List<Vector2> points { get; private set; }
     public List<float> vector { get; private set; }

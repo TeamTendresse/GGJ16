@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class GestureRecognitionController : MonoBehaviour
 {
     private static GestureRecognitionController _instance;
-
+    
     public float minRecognitionScore;
     public int NumUnistrokes;
     public int NumPoints;
@@ -33,9 +33,14 @@ public class GestureRecognitionController : MonoBehaviour
         
 	}
 
-    public void Init ()
+    public void Init (List<Gesture> gestures)
     {
         dollarRecognizer = new DollarRecognizer(NumUnistrokes, NumPoints, SquareSize, Origin);
+
+        for (int i = 0; i < gestures.Count; i++)
+        {
+            dollarRecognizer.addGesture(i.ToString(), gestures[i].points);
+        }
     }
 	
 	void Update ()
@@ -43,9 +48,9 @@ public class GestureRecognitionController : MonoBehaviour
         
 	}
 
-    public void addGesture (List<Vector2> points)
+    public void addGesture (int id, List<Vector2> points)
     {
-        int num = dollarRecognizer.addGesture(Random.Range(1, 1000).ToString(), points);
+        dollarRecognizer.addGesture(id.ToString(), points);
     }
 
     public bool isSignOk (List<Vector2> points)
@@ -58,7 +63,7 @@ public class GestureRecognitionController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Sign not recognized");
+            Debug.Log("Sign not recognized : " + res.score);
             return false;
         }
     }

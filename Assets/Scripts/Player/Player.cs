@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[ExecuteInEditMode]
 public class Player : MonoBehaviour
 {
+    public bool isSavingGestures;
     public float minGestureLength;
 
     private GestureRecognitionController gestureRecognitionController;
@@ -12,16 +14,61 @@ public class Player : MonoBehaviour
     private List<Vector2> points;
     private bool isDown;
     private Vector2 lastMousePosition;
+    private int nextId;
+    [SerializeField]
+    private List<Gesture> savedGestures;
+    private float OnGuiTimer;
 
     void Start ()
     {
         gestureRecognitionController = GestureRecognitionController.instance;
-        gestureRecognitionController.Init();
+        List<Gesture> gestures = new List<Gesture>();
+        for (int i = 0; i < savedGestures.Count; i++)
+        {
+            gestures.Add(new Gesture());
+            for (int j = 0; j < savedGestures[i].points.Count; j++)
+            {
+                gestures[i].points.Add(savedGestures[i].points[j]);
+            }
+        }
+        gestureRecognitionController.Init(gestures);
         dotSpawner = GameObject.FindObjectOfType<DotSpawner>();
 
         points = new List<Vector2>();
         isDown = false;
         lastMousePosition = Vector2.zero;
+        nextId = 0;
+    }
+    
+    void OnGUI ()
+    {
+        if (isSavingGestures)
+        {
+            if (Event.current.button == 1)
+            {
+                Vector2 mousePosition = Event.current.mousePosition;
+                if (Vector2.Distance(mousePosition, lastMousePosition) != 0)
+                {
+                    points.Add(mousePosition);
+                    lastMousePosition = mousePosition;
+                }
+            }
+        }
+    }
+
+    public void startSavingGestures()
+    {
+        savedGestures = new List<Gesture>();
+        Debug.Log("Start saving gestures");
+    }
+
+    public void addGesture()
+    {
+        savedGestures.Add(new Gesture(points));
+        Debug.Log("Saved a new gesture");
+        points = new List<Vector2>();
+        lastMousePosition = Vector2.zero;
+        Debug.Log("Saving a new gesture");
     }
 
     void Update()
@@ -32,10 +79,8 @@ public class Player : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.A))
         {
-            if (points.Count >= minGestureLength)
-            {
-                gestureRecognitionController.addGesture(points);
-            }
+            gestureRecognitionController.addGesture(nextId, points);
+            nextId++;
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -70,6 +115,7 @@ public class Player : MonoBehaviour
             }
         }
 #endif
+
 #if UNITY_ANDROID
         if (Input.touchCount > 0)
         {
