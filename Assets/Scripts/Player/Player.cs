@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private List<Gesture> savedGestures;
     private float OnGuiTimer;
-    public bool hasDoneUnlockSign { get; private set; }
+    public bool hasDoneUnlockSign { get; set; }
+    public float sleepTimer { get; private set; }
 
     void Start ()
     {
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
         lastMousePosition = Vector2.zero;
         nextId = 0;
         hasDoneUnlockSign = false;
+        sleepTimer = 0f;
     }
     
     void OnGUI ()
@@ -90,6 +92,7 @@ public class Player : MonoBehaviour
         {
             points.Clear();
             isDown = true;
+            sleepTimer = 0f;
         }
 
         if (isDown)
@@ -101,6 +104,7 @@ public class Player : MonoBehaviour
                 points.Add(mousePosition);
                 lastMousePosition = mousePosition;
             }
+            sleepTimer = 0f;
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -113,15 +117,22 @@ public class Player : MonoBehaviour
                     Result res;
                     if (gestureRecognitionController.isSignOk(points, out res))
                     {
-                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
-
-                        if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                        if (dotSpawner._Mode == DotSpawner.ModeSpawner.locked)
                         {
-                            hasDoneUnlockSign = true;
+                            if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                            {
+                                hasDoneUnlockSign = true;
+                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                            }
+                        }
+                        else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
+                        {
+                            showSign(savedGestures[System.Int32.Parse(res.name)].points);
                         }
                     }
                 }
             }
+            sleepTimer = 0f;
         }
 #endif
 
@@ -156,19 +167,27 @@ public class Player : MonoBehaviour
                             Result res;
                             if (gestureRecognitionController.isSignOk(points, out res))
                             {
-                                showSign(savedGestures[System.Int32.Parse(res.name)].points);
-
-                                if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                if (dotSpawner._Mode == DotSpawner.ModeSpawner.locked)
                                 {
-                                    hasDoneUnlockSign = true;
+                                    if (!hasDoneUnlockSign && int.Parse(res.name) == 0 && res.score >= gestureRecognitionController.minRecognitionScore)
+                                    {
+                                        hasDoneUnlockSign = true;
+                                        showSign(savedGestures[System.Int32.Parse(res.name)].points);
+                                    }
+                                }
+                                else if (dotSpawner._Mode == DotSpawner.ModeSpawner.unlocked)
+                                {
+                                    showSign(savedGestures[System.Int32.Parse(res.name)].points);
                                 }
                             }
                         }
                     }
                     break;
             }
+            sleepTimer = 0f;
         }
 #endif
+        sleepTimer += Time.deltaTime;
     }
 
     public List<Vector2> getGesturePoints(int id){
