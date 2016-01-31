@@ -26,8 +26,9 @@ public class Rituals : MonoBehaviour
         {
             if (currentHour >= times[i].x && currentHour <= times[i].y)
             {
-                if (i == signId)
+                if (i + 1 == signId)
                 {
+                    profile.setScore(profile.getScore() + 1);
                     return true;
                 }
             }
