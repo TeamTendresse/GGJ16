@@ -12,6 +12,7 @@ public class checkLoudness : MonoBehaviour {
     public float duration = 3.0F;
 	Camera camera ;
 	public Text count ;
+	public Text loudness ;
 	private Player player;
 
 	float objectiveTime ;
@@ -35,13 +36,15 @@ public class checkLoudness : MonoBehaviour {
 	void Update () {
 		int tRest = (int)(objectiveTime-Time.time) ;
 		count.text = tRest.ToString() ;
+		//loudness.text = MicInput.avgLoudness.ToString() ;
 		float t = Mathf.PingPong(Time.time, duration) / duration;
 		if(t-lastT > 0f && t>=0.99f)t=1f;
 		if(t-lastT < 0f && t<=0.01f)t=0f;
-		
-		if(MicInput.avgLoudness != -1f && !toSilent && !toNoise){
+		//float loud = MicInput.avgLoudness ;
+		float loud = 0f ;
+		if(loud != -1f && !toSilent && !toNoise){
 			//Debug.Log(MicInput.avgLoudness) ;
-			if(MicInput.avgLoudness >= 0.02f){
+			if(loud >= 0.02f){
 				if(status == 0){
 					//Debug.Log("to noise") ;
 					toNoise = true ;
@@ -83,8 +86,8 @@ public class checkLoudness : MonoBehaviour {
 		}
 
 		if(Time.time >= objectiveTime){
-			player.showSign(player.getGesturePoints(0)) ;
-			Invoke("goBack",5f);
+			//player.showSign(player.getGesturePoints(0)) ;
+			//Invoke("goBack",5f);
 		}
 	}
 
