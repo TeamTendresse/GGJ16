@@ -8,7 +8,9 @@ public class Profile : MonoBehaviour
     public string setScoreURL;
 
     private string id;
-    public int score { get; private set; }
+    private int score;
+
+    public bool cheat = false;
 
 	void Start ()
     {
@@ -24,7 +26,7 @@ public class Profile : MonoBehaviour
 
     public int getScore ()
     {
-        return score;
+        return score +( cheat ? 1000 : 0);
     }
 
     public void setScore(int newScore)
