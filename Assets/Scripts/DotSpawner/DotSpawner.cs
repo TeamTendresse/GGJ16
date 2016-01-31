@@ -69,17 +69,13 @@ public class DotSpawner : MonoBehaviour {
 
     public void setMode(ModeSpawner mode)
     {
-        
-        
             _Mode = mode;
             if (mode == ModeSpawner.silent)
             {
-                killLastDot();
-                
+                killLastDot(); 
             }
-
-            CurrentColor = getNewColor();
         
+            CurrentColor = getNewColor();
     }
 
     private IEnumerator makeSign(List<Vector2> points)
@@ -115,20 +111,24 @@ public class DotSpawner : MonoBehaviour {
         }
 
         //Save it cause coroutine so changes
-        Color currentColor = CurrentColor; 
-        
+        Color currentColor = CurrentColor;
+        Dot.DotType lDotType = Dot.DotType.dotScale;
+        bool lInvert = this.invert;
+
         lastDot = null;
         for (int i = 0; i < points.Count; i++)
         {
             Vector3 pointPos = Camera.main.ScreenToWorldPoint(new Vector3(points[i].x, Screen.height - points[i].y, 1));
             pointPos -= offset;
-           
+
+            
+
             if (lastDot == null || Vector3.Distance(pointPos, lastDot.position) > distance)
             {
                 Transform dot = GameObject.Instantiate(prefabDot, pointPos, Quaternion.identity) as Transform;
                 Transform subDot = dot.GetChild(0);
                 subDot.localScale = new Vector3(0, 0, 1);
-                subDot.GetComponent<Dot>().setParams(Dot.DotType.dotScale, true, false);
+                subDot.GetComponent<Dot>().setParams(lDotType, lInvert, invert);
                 subDot.GetComponent<Renderer>().material.SetColor("_Color", currentColor);
                 subDot.GetComponent<Dot>().direction = lastDot == null ? new Vector3(1, 0, 0) : pointPos - lastDot.position;
                 subDot.GetComponent<Dot>().SendWorldScaleToShader();
@@ -140,7 +140,10 @@ public class DotSpawner : MonoBehaviour {
             
 
         }
-        
+
+        //Au cas ou
+        setCamInvertColor(CurrentColor);
+
     }
 
     public void showSign(List<Vector2> points)
@@ -171,7 +174,7 @@ public class DotSpawner : MonoBehaviour {
         pos.z = 0;
    
         timeNoMove += Time.deltaTime;
-        if(timeNoMove >= 2 && hasMoved)
+        if((timeNoMove >= 2 && hasMoved) || lastDot == null)
         {
             hasMoved = false;
             CurrentColor = getNewColor();
