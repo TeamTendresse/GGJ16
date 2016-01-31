@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     private float OnGuiTimer;
     public bool hasDoneUnlockSign { get; set; }
     public float sleepTimer { get; private set; }
+    public bool hasTouched { get; private set; }
 
     void Start ()
     {
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
         nextId = 0;
         hasDoneUnlockSign = false;
         sleepTimer = 0f;
+        hasTouched = false;
     }
     
     void OnGUI ()
@@ -93,6 +95,7 @@ public class Player : MonoBehaviour
             points.Clear();
             isDown = true;
             sleepTimer = 0f;
+            hasTouched = true;
         }
 
         if (isDown)
@@ -133,6 +136,7 @@ public class Player : MonoBehaviour
                 }
             }
             sleepTimer = 0f;
+            hasTouched = true;
         }
 #endif
 
@@ -185,6 +189,7 @@ public class Player : MonoBehaviour
                     break;
             }
             sleepTimer = 0f;
+            hasTouched = true;
         }
 #endif
         sleepTimer += Time.deltaTime;
@@ -198,5 +203,11 @@ public class Player : MonoBehaviour
     {
         feedbacks.playVictory() ;
         dotSpawner.showSign(points);
+    }
+
+    public void showSignFromId (int id)
+    {
+        feedbacks.playVictory();
+        dotSpawner.showSign(savedGestures[id].points);
     }
 }
